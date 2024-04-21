@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "jirageminiaiagent"
+version = "0.1.0"
+description = "An AI developed with Gemini AI who will elevate Jira to the next level."
+authors = ["CapedCrusaderD31taf04c3 <shriharikoli25@gmail.com>"]
+license = "Apache 2.0 http://www.apache.org/licenses/"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8.10"
+langchain = "^0.1.16"
+pydotenv = "^0.0.7"
+fastapi = "^0.110.2"
+google-generativeai = "^0.5.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
