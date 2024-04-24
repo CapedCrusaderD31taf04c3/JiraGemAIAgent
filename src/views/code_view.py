@@ -33,7 +33,7 @@ class CodeView:
     """
     """
     @code_router.post("/code/")
-    async def write_code(ticket: TicketModel):
+    async def write_code(self, ticket: TicketModel):
         """
         """
 
