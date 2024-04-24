@@ -4,10 +4,21 @@ import os
 
 class PRCreator:
     """
+    contains methods to create PR
     """
 
     def __init__(self, title, body, head_branch):
         """
+        initialises the title, body and branch for the PR
+
+        param title: title of the PR
+        type title: str
+
+        param body: body for the PR
+        type body: str
+
+        param head_branch: name of the head branch
+        type head_branch: str
         """
 
         self.title = title
@@ -17,6 +28,7 @@ class PRCreator:
     @classmethod
     def prepare_url(cls):
         """
+        prepares URL for the PR using environment variables for repo owner and repo name
         """
 
         url = (
@@ -29,6 +41,7 @@ class PRCreator:
 
     def prepare_payload(self) -> str:
         """
+        prepares payload for the PR
         """
 
         payload = {
@@ -43,6 +56,7 @@ class PRCreator:
     @classmethod
     def prepare_headers(cls):
         """
+        prepares headers for the PR
         """
 
         headers = {
@@ -56,6 +70,7 @@ class PRCreator:
 
     def create_pull_request(self):
         """
+        creates pull request by using the url, headers and payload created initially
         """
 
         response = requests.request(

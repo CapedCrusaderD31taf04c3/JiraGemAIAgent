@@ -5,6 +5,7 @@ import google.generativeai as genai
 
 class LoadHistory:
     """
+    contains methods to load prompts for the chat 
     """
     
     history = [CoderPrompt.PROMPT]
@@ -12,6 +13,10 @@ class LoadHistory:
     @classmethod
     def load_src_code_in_history(cls, docs):
         """
+        loads the source code in the chat history
+
+        param docs: contains the source code
+        type docs: list
         """
         cls.history.append(CoderPrompt.SOURCE_CODE_COMING_MSG)
         
@@ -36,6 +41,10 @@ class GenerativeAI:
 
     def start_new_chat(self, docs):
         """
+        loads the prompts and source code in history and starts a new chat
+
+        param docs: the source code to be included in history
+        type docs: list
         """
         history = LoadHistory.load_src_code_in_history(docs=docs)
         chat = self.model.start_chat(history=history)
@@ -45,6 +54,13 @@ class GenerativeAI:
 
     def ask(self, question, docs):
         """
+        returns the response to the chat
+
+        param question: the question to be asked to AI
+        type question: str
+
+        param docs: the source code to be included in question
+        type docs: list
         """
         chat = self.start_new_chat(docs=docs)
         response = chat.send_message(content=question)

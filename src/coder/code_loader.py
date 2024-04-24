@@ -5,6 +5,7 @@ from langchain_community.document_loaders import PythonLoader
 
 class SourceCodeLoader:
     """
+    contains method to load source code
     """
 
     docs = []
@@ -12,6 +13,7 @@ class SourceCodeLoader:
     @classmethod
     def loader(cls):
         """
+        loads source code from the directory
         """
 
         loader = DirectoryLoader(

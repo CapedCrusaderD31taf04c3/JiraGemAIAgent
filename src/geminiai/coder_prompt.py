@@ -2,6 +2,7 @@
 
 class CoderPrompt:
     """
+    prepares the prompt for updating source code
     """
 
     INPUT_PREPARATION = """we are providing source code of a project in some next messages after the given example of output, please consider them as a whole project 

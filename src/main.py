@@ -11,10 +11,12 @@ import uvicorn
 
 class LoadEnvVars:
     """
+    contains method to load environment variables
     """
     @staticmethod
     def load_env_vars() -> None:
         """
+        loads the environment variables
         """
 
         Logger.info(message="Loading Env Vars", stage="START")
@@ -27,6 +29,7 @@ class LoadEnvVars:
 
 class InitiateAIServer:
     """
+    contains methods to initiate the AI server
     """
     
     app = FastAPI()
@@ -34,6 +37,7 @@ class InitiateAIServer:
     @classmethod
     def include_routers(cls):
         """
+        includes the required URL routers for fastAPI
         """
         routers = [
             home_router,
@@ -50,7 +54,9 @@ class InitiateAIServer:
     @classmethod
     def get_app(cls):
         """
+        configures the server by adding routers
         """
+
         Logger.info(message="Server Configuring", stage="START")
         
         # Adding all Routers
@@ -63,6 +69,7 @@ class InitiateAIServer:
 # Run the FastAPI application
 if __name__ == "__main__":
     """
+    runs the fastAPI application
     """
 
     Logger.info(message="Initiating Env Var Loader", stage="START")

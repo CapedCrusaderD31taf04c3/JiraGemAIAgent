@@ -3,10 +3,15 @@ from logger.custom_logger import Logger
 
 class TicketInfoExtractor:
     """
+    extracts the information from the ticket
     """
 
     def __init__(self, ticket):
         """
+        extracts key, summary, description and type of ticket
+
+        param ticket: ticket to extract information from
+        type ticket: TicketModel   
         """
 
         Logger.info(message="Retrieving Ticket Information", stage="START")

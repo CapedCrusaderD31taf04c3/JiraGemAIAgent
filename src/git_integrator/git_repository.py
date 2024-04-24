@@ -5,6 +5,7 @@ import os
 
 class Repository:
     """
+    initialises the repo and default branch for git
     """
 
     repo = Repo(os.getenv("PROJECT_DIR"), odbt=GitDB)

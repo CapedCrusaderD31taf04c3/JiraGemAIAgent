@@ -3,6 +3,7 @@ import logging
 
 class Logger:
     """
+    contains methods for different kinds of loggers
     """
 
     logger = logging.getLogger("Jira-App")
@@ -23,6 +24,7 @@ class Logger:
             format="%(levelname)s:      %(message)s"
         ):
         """
+        basic config for the logging system
         """
 
         logging.basicConfig(
@@ -33,6 +35,13 @@ class Logger:
     @classmethod
     def info(cls, message, stage=None):
         """
+        logger for info message
+
+        param message: the info message
+        type message: str
+
+        param stage: specifies the stage of logging
+        type stage: str
         """
         if not stage:
             cls.logger.info(message)
@@ -46,6 +55,10 @@ class Logger:
     @classmethod
     def debug(cls, message):
         """
+        logger for debug message
+
+        param message: the debug message
+        type message: str
         """
 
         cls.logger.debug(message)
@@ -53,6 +66,10 @@ class Logger:
     @classmethod
     def error(cls, message):
         """
+        logger for error message
+
+        param message: the error message
+        type message: str
         """
 
         cls.logger.error(f"\033[31;40m{message}\033[0;0m")
@@ -60,6 +77,10 @@ class Logger:
     @classmethod
     def warning(cls, message):
         """
+        logger for warnings
+
+        param message: the warning message
+        type message: str
         """
 
         cls.logger.warning(message)
@@ -67,6 +88,10 @@ class Logger:
     @classmethod
     def critical(cls, message):
         """
+        logger for critical message
+
+        param message: the critical message
+        type message: str
         """
 
         cls.logger.critical(message)
