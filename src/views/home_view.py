@@ -21,7 +21,7 @@ class HomeView:
     """
     """
     @home_router.get("/")
-    async def home():
+    async def home(self):
         """
         """
 

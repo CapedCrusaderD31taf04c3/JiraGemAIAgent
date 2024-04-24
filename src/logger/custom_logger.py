@@ -20,7 +20,7 @@ class Logger:
     """
     """
 
-    logger = logging.getLogger("Jira-App")
+    cust_logger = logging.getLogger("Jira-App")
     logging.basicConfig(
             level=logging.INFO, 
             format="%(levelname)s:     %(message)s"
@@ -50,12 +50,12 @@ class Logger:
         """
         """
         if not stage:
-            cls.logger.info(message)
+            cls.cust_logger.info(message)
         else:
             if stage == "START":
-                cls.logger.info(f"\033[32;40m<START>\033[0;0m - {message}")
+                cls.cust_logger.info(f"\033[32;40m<START>\033[0;0m - {message}")
             elif stage == "END":
-                cls.logger.info(f"\033[31;40m<END>\033[0;0m   - {message}")
+                cls.cust_logger.info(f"\033[31;40m<END>\033[0;0m   - {message}")
         
 
     @classmethod
@@ -63,27 +63,27 @@ class Logger:
         """
         """
 
-        cls.logger.debug(message)
+        cls.cust_logger.debug(message)
 
     @classmethod
     def error(cls, message):
         """
         """
 
-        cls.logger.error(f"\033[31;40m{message}\033[0;0m")
+        cls.cust_logger.error(f"\033[31;40m{message}\033[0;0m")
 
     @classmethod
     def warning(cls, message):
         """
         """
 
-        cls.logger.warning(message)
+        cls.cust_logger.warning(message)
 
     @classmethod
     def critical(cls, message):
         """
         """
 
-        cls.logger.critical(message)
+        cls.cust_logger.critical(message)
 
     
