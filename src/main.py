@@ -78,11 +78,14 @@ class InitiateAIServer:
 if __name__ == "__main__":
     """
     """
+    try:
+        Logger.info(message="Initiating Env Var Loader", stage="START")
+        LoadEnvVars.load_env_vars()
 
-    Logger.info(message="Initiating Env Var Loader", stage="START")
-    LoadEnvVars.load_env_vars()
-
-    Logger.info(message="Initiating Server", stage="START")
-    app = InitiateAIServer.get_app()
+        Logger.info(message="Initiating Server", stage="START")
+        app = InitiateAIServer.get_app()
+        
+        uvicorn.run(app, host="0.0.0.0", port=8000)
     
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    except Exception as err:
+        Logger.error(message=str(err))

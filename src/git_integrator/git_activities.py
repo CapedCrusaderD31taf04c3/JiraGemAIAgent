@@ -15,6 +15,9 @@
 
 from .git_repository import Repository
 from .create_pr import PRCreator
+
+from logger.custom_logger import Logger
+
 import re
 
 class GitActivity(Repository):
@@ -99,3 +102,12 @@ class GitActivity(Repository):
             body=description,
             head_branch=self.branch_name
         )
+
+
+    def safe_eject(self):
+        """
+        """
+        Logger.info(message="Safe Ejecting ...", stage="START")
+        self.git.checkout(".")
+        self.git.checkout(self.default_branch)
+        Logger.info(message="Safe Ejected", stage="END")

@@ -14,32 +14,55 @@
 # limitations under the License.
 
 from .coder_prompt import CoderPrompt
+from .model_responses import ModelResponse
+from google.generativeai.types.content_types import ContentDict, PartDict
 
-import os
 import google.generativeai as genai
+import os
+
 
 class LoadHistory:
     """
     """
     
-    history = [CoderPrompt.PROMPT]
+    history = []
+
+    @classmethod
+    def get_content(cls, role: str, text: str) -> ContentDict:
+        """
+        """
+
+        return ContentDict(role=role, parts=[PartDict(text=CoderPrompt.PROMPT)])
+
+
+    @classmethod
+    def load_intro_msg_in_history(cls):
+        """
+        """
+        cls.history.append(cls.get_content(role="user", text=CoderPrompt.PROMPT))
+        cls.history.append(cls.get_content(role="model", text=ModelResponse.INTRO_MSG_RECEIVED))
 
     @classmethod
     def load_src_code_in_history(cls, docs):
         """
         """
-        cls.history.append(CoderPrompt.SOURCE_CODE_COMING_MSG)
-        
+
+        cls.load_intro_msg_in_history()
+
+        cls.history.append(cls.get_content(role="user", text=CoderPrompt.SOURCE_CODE_COMING_MSG))
+        cls.history.append(cls.get_content(role="model", text=ModelResponse.SRC_CODE_COMING))
         for doc in docs:
             source_code = (
-                f"# file_location : {doc.metadata['source']}\n"
-                f"#####\n{doc.page_content}"
+                f"# file_location = {doc.metadata['source']}\n"
+                f"{doc.page_content}"
             )
 
-            cls.history.append(source_code)
+            cls.history.append(cls.get_content(role="user", text=source_code))
+            cls.history.append(cls.get_content(role="model", text=ModelResponse.TXT_OF_SRC_FILE_RECEIVED))
 
-        cls.history.append(CoderPrompt.SOURCE_CODE_ARRIVED_MSG)
-
+        cls.history.append(cls.get_content(role="user", text=CoderPrompt.SOURCE_CODE_ARRIVED_MSG))
+        cls.history.append(cls.get_content(role="model", text=ModelResponse.ALL_SRC_CODE_RECEIVED))
+        
         return cls.history
 
 
