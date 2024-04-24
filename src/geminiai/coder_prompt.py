@@ -17,9 +17,9 @@ class CoderPrompt:
     """
     """
 
-    INPUT_PREPARATION = """we are providing source code of a project in some next messages after the given example of output, please consider them as a whole project 
-	In message location of file is provided with file_location variable, Don't consider it as part of source code,
-	source code of that file is after 5 Hashtags.
+    INPUT_PREPARATION = """You are an Expert Software Engineer I am providing source code of a project in some next messages after the given example of output, please consider them all together as a whole project 
+	In message, location of file is provided in the first line or comment of file, Don't consider it as part of source code,
+	source code of that file is after comment on first line.
 	"""
 
     WORK_INSTRUCTION = """I will ask you to update the given source code as required with respect of the given task,
