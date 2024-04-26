@@ -61,11 +61,11 @@ class CodeView:
             )
             
             # For Github Activities
-            git_bot = GitActivity()
-            git_bot.create_new_branch(
-                ticket_id=extract.ticket_key, 
-                ticket_title=extract.ticket_summary
-            ).checkout_to_branch(git_bot.branch_name)
+            # git_bot = GitActivity()
+            # git_bot.create_new_branch(
+            #     ticket_id=extract.ticket_key, 
+            #     ticket_title=extract.ticket_summary
+            # ).checkout_to_branch(git_bot.branch_name)
 
             src = SourceCodeLoader.loader()
 
@@ -73,32 +73,17 @@ class CodeView:
 
             CodeUpdater(answer.content).update()
 
-            git_bot.stage_changes().commit_changes(
-                commit_message="This is a Commit Message"
-            ).push_changes()
+            # git_bot.stage_changes().commit_changes(
+            #     commit_message="This is a Commit Message"
+            # ).push_changes()
 
-            git_bot.create_pr(description=extract.ticket_desc)
+            # git_bot.create_pr(description=extract.ticket_desc)
 
             response =  {
                 "message": "Success",
                 "status": 200,
                 "data": answer
             }
-        except JSONDecodeError as json_err:
-            GitActivity.safe_eject()
-            response =  {
-                "message": "Error",
-                "status": 500,
-                "data": str(json_err)
-            }
-        except GitCommandError as git_err:
-            GitActivity.safe_eject()
-            response =  {
-                "message": "Error",
-                "status": 500,
-                "data": str(git_err)
-            }
-
         except Exception as err:
             GitActivity.safe_eject()
             response =  {

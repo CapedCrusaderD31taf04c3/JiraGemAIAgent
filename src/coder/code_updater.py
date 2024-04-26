@@ -22,7 +22,7 @@ class CodeUpdater:
     creating, or deleting files based on the provided information.
     """
 
-    def __init__(self, answer:dict) -> None:
+    def __init__(self, answer:dict):
         """
         Initialises the solution with the answer received
 
@@ -83,7 +83,7 @@ class CodeUpdater:
 	
     def update(self) -> None:
         """
-        Execute the update process based on provided solutions. 
+        Execute the update process based on provided solutions.
         """
 
         for solution in self.solutions:

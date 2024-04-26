@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter
 
 home_router = APIRouter()
 

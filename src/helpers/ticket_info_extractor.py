@@ -21,7 +21,7 @@ class TicketInfoExtractor:
     A class for extracting information from a ticket object.
     """
 
-    def __init__(self, ticket: TicketModel) -> None:
+    def __init__(self, ticket: TicketModel):
         """
         Initialize TicketInfoExtractor object and retrieve ticket information.
 

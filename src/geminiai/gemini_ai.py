@@ -16,7 +16,8 @@
 from .coder_prompt import CoderPrompt
 from .model_responses import ModelResponse
 from google.generativeai.types.content_types import ContentDict, PartDict
-
+from google.generativeai.generative_models import ChatSession
+from google.generativeai.types.generation_types import GenerateContentResponse
 import google.generativeai as genai
 import os
 
@@ -31,15 +32,27 @@ class LoadHistory:
     @classmethod
     def get_content(cls, role: str, text: str) -> ContentDict:
         """
+        Get Content For Chat History
+
+        param role: Role of speaker
+        type role: str
+
+        param text: message
+        type text: str
+
+        return: Structured Content
+        rtype: ContentDict
         """
 
-        return ContentDict(role=role, parts=[PartDict(text=CoderPrompt.PROMPT)])
+        return ContentDict(role=role, parts=[PartDict(text=text)])
 
 
     @classmethod
-    def load_intro_msg_in_history(cls):
+    def load_intro_msg_in_history(cls) -> None:
         """
+        Loading introduction message into history
         """
+        
         cls.history.append(cls.get_content(role="user", text=CoderPrompt.PROMPT))
         cls.history.append(cls.get_content(role="model", text=ModelResponse.INTRO_MSG_RECEIVED))
 
@@ -83,7 +96,7 @@ class GenerativeAI:
 
     model = genai.GenerativeModel('gemini-pro')
 
-    def start_new_chat(self, docs:list) -> genai.generative_models.ChatSession:
+    def start_new_chat(self, docs:list) -> ChatSession:
         """
         Start a new chat session.
 
@@ -91,7 +104,7 @@ class GenerativeAI:
         type docs: list
 
         return: Chat session object
-        rtype: genai.generative_models.ChatSession
+        rtype: ChatSession
         """
         history = LoadHistory.load_src_code_in_history(docs=docs)
         chat = self.model.start_chat(history=history)
@@ -99,7 +112,7 @@ class GenerativeAI:
         return chat
     
 
-    def ask(self, question: str, docs: list) -> str:
+    def ask(self, question: str, docs: list) -> GenerateContentResponse:
         """
         Ask a question to the AI model.
 
@@ -110,7 +123,7 @@ class GenerativeAI:
         type docs: list
 
         return: Response from the AI model
-        rtype: str
+        rtype: GenerateContentResponse
         """
         chat = self.start_new_chat(docs=docs)
         response = chat.send_message(content=question)

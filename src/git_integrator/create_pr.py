@@ -21,7 +21,7 @@ class PRCreator:
     A class for creating pull requests on GitHub repositories.
     """
 
-    def __init__(self, title: str, body: str, head_branch: str) -> None:
+    def __init__(self, title: str, body: str, head_branch: str):
         """
         Initialize the PRCreator object with necessary information
 
