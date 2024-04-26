@@ -22,7 +22,7 @@ class HomeView:
     A class representing views for the home endpoint.
     """
     @home_router.get("/")
-    async def home() -> dict:
+    async def home() -> dict: # NOTE: SCA warning suppressed Python:S5720
         """
         Endpoint for the home view.
 

@@ -13,51 +13,66 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+from pathlib import Path
+
 class CoderPrompt:
     """
     Prepares the prompt for updating source code
     """
 
-    INPUT_PREPARATION = """You are an Expert Software Engineer I am providing source code of a project in some next messages after the given example of output, please consider them all together as a whole project 
-	In message, location of file is provided in the first line or comment of file, Don't consider it as part of source code,
-	source code of that file is after comment on first line.
+    INPUT_PREPARATION = """You are an Expert Software Engineer tasked with updating source code provided in subsequent messages as part of a larger project. 
+    The location of each file within the project will be specified in the first commented line with 'file_location'. 
+    Disregard this location information as part of the source code. The actual source code for each file will follow the comment on the first line. 
+    Ensure to consider all provided messages as components of the entire project. Your goal is to understand and update the code accordingly.
 	"""
 
-    WORK_INSTRUCTION = """I will ask you to update the given source code as required with respect of the given task,
-	whatever the code you will update make sure you don't create unwanted bugs in it,
-	There will be 3 situations while updating the project to complete the task,
-	Old file needs to be updated then to_update=true, to_create=false, to_delete=false.
-	New file needs to be created then to_create=true, to_update=false, to_delete=false.
-	Unwanted file needs to be deleted then to_delete=true, to_update=false, to_create=false.
+    WORK_INSTRUCTION = """During the process of updating the provided source code to complete the task, you may encounter three situations:
+	1.If an existing file requires modification, indicate to_update=true.
+	2.If a new file needs to be created, specify to_create=true.
+	3.If an unwanted file should be deleted, specify to_delete=true. In this case, if source code is not provided, it is acceptable.
+	Ensure that any modifications made to the code are implemented without introducing unintended bugs.
 	"""
 
-    OUTPUT_SPECIFICATION = """Provide reply message in given format with same keynames only, 
-	for reference consider below example
+    OUTPUT_SPECIFICATION = """Provide answer in valid json string format only, 
+	for reference consider below examples for output format, under this examples Question is given infront pf Q:
+    and answer is given infront of A:
+    In answer keep same key names and format,
+    I am giving sample examples now
 	"""
 
-    OUPUT_EXAMPLES = """
-	Q: {
-        "heading": "add todo_main function",
-        "info": "change name of main function to todo_main function"
-    }
-	A: [
-		{
-		"file_location": "E:/Dummy_Project/todo_app/src/main.py",
-		"source_code": "# Testing\nfrom Todo import TodoApp\n\ndef main() -> None:\n  app: TodoApp = TodoApp()\n    app.start()\n\nif __name__ == "__main__":\n		main()",
-		"to_update": true,
-		"to_create": false,
-		"to_delete": false
-		}
-	]
+    OUPUT_EXAMPLES_COMING_MSG = """Your answers should be provided in a valid JSON string format only. 
+    Refer to the examples below for the output format:
 	"""
 
-    PROMPT = (
+    OUPUT_EXAMPLES_ARRIVED_MSG = """Your answers should be provided in a valid JSON string format only. 
+    Refer to the examples below for the output format:
+	"""
+
+    INTRODUCTION_PROMPT = (
 		f"{INPUT_PREPARATION}\n"
 		f"{WORK_INSTRUCTION}\n"
 		f"{OUTPUT_SPECIFICATION}\n"
-		f"{OUPUT_EXAMPLES}\n"
 	)
 
-    SOURCE_CODE_COMING_MSG = "I am giving the messages one by one  in which source code is exist and I will let you know when I gave all the source code"
+    SOURCE_CODE_COMING_MSG = "I will provide the messages containing the source code one by one. You will be informed once all the source code messages have been provided."
     
-    SOURCE_CODE_ARRIVED_MSG = "I gave all the messages with source code in it, now I'll give you task"
+    SOURCE_CODE_ARRIVED_MSG = "All messages containing the necessary source code have been provided. Now I will give you task"
+
+
+    @classmethod
+    def prepare_output_examples(cls):
+        """
+        Preparing examples from example.json file
+        """
+
+        with open(Path(__file__).parent / "examples.json", "r") as fr:
+            json_data = json.load(fr)
+        
+
+        output_examples: str = ""
+        
+        for example in json_data.get("examples", []):
+            output_examples += f"""\nQ: {example["Q"]},\nA: {example["A"]}"""
+            
+        return output_examples

@@ -53,7 +53,14 @@ class LoadHistory:
         Loading introduction message into history
         """
         
-        cls.history.append(cls.get_content(role="user", text=CoderPrompt.PROMPT))
+        introduction_text = f"""
+        {CoderPrompt.PROMPT}
+        {CoderPrompt.OUPUT_EXAMPLES_COMING_MSG}
+        {CoderPrompt.prepare_output_examples()}
+        {CoderPrompt.OUPUT_EXAMPLES_ARRIVED_MSG}
+        """
+
+        cls.history.append(cls.get_content(role="user", text=introduction_text))
         cls.history.append(cls.get_content(role="model", text=ModelResponse.INTRO_MSG_RECEIVED))
 
     @classmethod
@@ -93,8 +100,15 @@ class GenerativeAI:
     """
 
     genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel(
+        model_name="gemini-pro",
+        generation_config={
+            "temperature": 1,
+            "top_p": 0.95,
+            "top_k": 0, 
+            "max_output_tokens": 1048576,
+        }
+    )
 
     def start_new_chat(self, docs:list) -> ChatSession:
         """
