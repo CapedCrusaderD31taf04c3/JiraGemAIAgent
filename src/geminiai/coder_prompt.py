@@ -34,10 +34,10 @@ class CoderPrompt:
 	Ensure that any modifications made to the code are implemented without introducing unintended bugs.
 	"""
 
-    OUTPUT_SPECIFICATION = """Provide answer in valid json string format only, 
+    OUTPUT_SPECIFICATION = """Provide answer in valid string format only do not provide json codeblock like "```json" , the given answer string must successfully load with loads() method from json module in python, 
 	for reference consider below examples for output format, under this examples Question is given infront pf Q:
     and answer is given infront of A:
-    In answer keep same key names and format,
+    In answer keep same key names and format, answer must of string datatype,
     I am giving sample examples now
 	"""
 

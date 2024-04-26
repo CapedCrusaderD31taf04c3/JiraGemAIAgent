@@ -54,7 +54,7 @@ class LoadHistory:
         """
         
         introduction_text = f"""
-        {CoderPrompt.PROMPT}
+        {CoderPrompt.INTRODUCTION_PROMPT}
         {CoderPrompt.OUPUT_EXAMPLES_COMING_MSG}
         {CoderPrompt.prepare_output_examples()}
         {CoderPrompt.OUPUT_EXAMPLES_ARRIVED_MSG}
@@ -80,8 +80,9 @@ class LoadHistory:
         cls.history.append(cls.get_content(role="user", text=CoderPrompt.SOURCE_CODE_COMING_MSG))
         cls.history.append(cls.get_content(role="model", text=ModelResponse.SRC_CODE_COMING))
         for doc in docs:
+            path = doc.metadata['source'].replace('\\\\', '/')
             source_code = (
-                f"# file_location = {doc.metadata['source']}\n"
+                f"# file_location = {path}\n"
                 f"{doc.page_content}"
             )
 
