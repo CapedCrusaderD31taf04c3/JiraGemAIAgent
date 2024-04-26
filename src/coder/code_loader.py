@@ -16,6 +16,7 @@
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.document_loaders import PythonLoader
 
+import os
 
 class SourceCodeLoader:
     """
@@ -29,7 +30,7 @@ class SourceCodeLoader:
         """
 
         loader = DirectoryLoader(
-            "E:/Dummy_Project/todo_app/src", 
+            os.getenv("PROJECT_REPO"), 
             glob="**/*.py",
             exclude=["*.pyc"],
             recursive=True,
