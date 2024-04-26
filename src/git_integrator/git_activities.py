@@ -15,8 +15,11 @@
 
 from .git_repository import Repository
 from .create_pr import PRCreator
-
 from logger.custom_logger import Logger
+from typing import TypeVar
+
+GitActivity = TypeVar("GitActivity")
+
 
 import re
 
@@ -25,7 +28,7 @@ class GitActivity(Repository):
     A class representing Git activities on a repository.
     """
 
-    def __init__(self) -> None:
+    def __init__(self):
         """
         Initialize GitActivity object and perform initial operations.
         """
@@ -35,7 +38,7 @@ class GitActivity(Repository):
 
         self.branch_name = ""
 
-    def prepare_branch_name(self, ticket_id:str, ticket_title:str) -> str:
+    def prepare_branch_name(self, ticket_id: str, ticket_title: str) -> str:
         """
         Prepare a branch name based on the ticket ID and title.
 
@@ -139,7 +142,7 @@ class GitActivity(Repository):
 
         return self
     
-    def create_pr(self, description: str ="") -> None:
+    def create_pr(self, description: str = "") -> None:
         """
         Create a pull request with the current branch.
 
@@ -155,8 +158,9 @@ class GitActivity(Repository):
 
     def safe_eject(self):
         """
+        Safely restructuring git local repositry environment
         """
-        Logger.info(message="Safe Ejecting ...", stage="START")
+        Logger.info(message="Safely Ejecting ...", stage="START")
         self.git.checkout(".")
         self.git.checkout(self.default_branch)
-        Logger.info(message="Safe Ejected", stage="END")
+        Logger.info(message="Safely Ejected", stage="END")

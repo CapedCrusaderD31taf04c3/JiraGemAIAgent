@@ -23,7 +23,7 @@ class SourceCodeLoader:
     A class responsible for loading source code files from a directory.
     """
 
-    docs = []
+    docs: list = []
 
     @classmethod
     def loader(cls) -> list:
