@@ -4,28 +4,29 @@ from pathlib import Path
 
 class CodeUpdater:
     """
-    contains methods to update source code, create/delete files wherever required
+    This class parses a JSON answer containing solutions and performs actions such as updating,
+    creating, or deleting files based on the provided information.
     """
 
-    def __init__(self, answer) -> None:
+    def __init__(self, answer:dict) -> None:
         """
-        initialises the solution with the answer received
+        Initialises the solution with the answer received
 
-        param answer: answer given from AI
+        param answer: Answer given from AI
         type answer: dict
         """
 
         self.solutions = json.loads(answer)
 
     # File update
-    def file_updater(self, file_location, file_data):
+    def file_updater(self, file_location: Path, file_data: str) -> None:
         """
-        updates the file with the given data
+        Update a file with new data.
 
-        param file_location: location of the file to be updated
-        type file_location: str
+        param file_location: Location of the file to be updated
+        type file_location: Path
 
-        param file_data: updated data to write in the file
+        param file_data: New data to write to the file
         type file_data: str
         """
 
@@ -33,14 +34,14 @@ class CodeUpdater:
             with open(file_location, "w") as fw:
                 fw.write(file_data)
 
-    def file_creater(self, file_location, file_data):
+    def file_creater(self, file_location: Path, file_data: str) -> None:
         """
-        creates a file in the given file location with the given file data
+        Create a new file with specified data
 
-        param file_location: location of the file
-        type file_location: str
+        param file_location: Location where the new file should be created
+        type file_location: Path
 
-        param file_data: data to be written in the file
+        param file_data: Data to write to the new file
         type file_data: str
         """
 
@@ -49,12 +50,12 @@ class CodeUpdater:
         with open(file_location, "w") as fw:
             fw.write(file_data)
 
-    def file_deleter(self, file_location):
+    def file_deleter(self, file_location: Path) -> None:
         """
-        deletes the file in the given location
+        Delete a file and its parent directory if it becomes empty.
 
         param file_location: location of file to be deleted
-        type file_location: str
+        type file_location: Path
         """
 
         if file_location.exists():
@@ -66,9 +67,9 @@ class CodeUpdater:
         if not any(are_files_exists):
             file_location.parent.rmdir()
 	
-    def update(self):
+    def update(self) -> None:
         """
-        updates/creates/deletes the file based on the solution 
+        Execute the update process based on provided solutions. 
         """
 
         for solution in self.solutions:

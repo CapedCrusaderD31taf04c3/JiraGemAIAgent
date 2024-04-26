@@ -3,7 +3,7 @@ import logging
 
 class Logger:
     """
-    contains methods for different kinds of loggers
+    A custom logger class for logging messages.
     """
 
     logger = logging.getLogger("Jira-App")
@@ -13,6 +13,7 @@ class Logger:
         )
     def __init__(self) -> None:
         """
+        Initialize the Logger object.
         """
         
         pass
@@ -20,11 +21,17 @@ class Logger:
     @classmethod
     def config_logger(
             cls, 
-            level=logging.INFO, 
-            format="%(levelname)s:      %(message)s"
-        ):
+            level: int =logging.INFO, 
+            format: str ="%(levelname)s:      %(message)s"
+        ) -> None:
         """
-        basic config for the logging system
+        Configure the logger with specified level and format.
+
+        param level: The logging level (default is logging.INFO).
+        type level: int
+
+        param format: The format string for logging messages.
+        type format: str
         """
 
         logging.basicConfig(
@@ -33,14 +40,14 @@ class Logger:
         )
 
     @classmethod
-    def info(cls, message, stage=None):
+    def info(cls, message: str, stage: str = None) -> None:
         """
-        logger for info message
+        Log an info message.
 
-        param message: the info message
+        param message: The message to be logged
         type message: str
 
-        param stage: specifies the stage of logging
+        param stage: Optional stage indicator for START/END
         type stage: str
         """
         if not stage:
@@ -53,44 +60,44 @@ class Logger:
         
 
     @classmethod
-    def debug(cls, message):
+    def debug(cls, message: str) -> None:
         """
-        logger for debug message
+        Log a debug message.
 
-        param message: the debug message
+        param message: The message to be logged
         type message: str
         """
 
         cls.logger.debug(message)
 
     @classmethod
-    def error(cls, message):
+    def error(cls, message: str) -> None:
         """
-        logger for error message
+        Log an error message
 
-        param message: the error message
+        param message: The message to be logged
         type message: str
         """
 
         cls.logger.error(f"\033[31;40m{message}\033[0;0m")
 
     @classmethod
-    def warning(cls, message):
+    def warning(cls, message: str) -> None:
         """
-        logger for warnings
+        Log a warning message
 
-        param message: the warning message
+        param message: The message to be logged
         type message: str
         """
 
         cls.logger.warning(message)
 
     @classmethod
-    def critical(cls, message):
+    def critical(cls, message: str) -> None:
         """
-        logger for critical message
+        Log a critical message
 
-        param message: the critical message
+        param message: The message to be logged
         type message: str
         """
 

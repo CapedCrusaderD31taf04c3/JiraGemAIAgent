@@ -13,18 +13,19 @@ code_router = APIRouter()
 
 class CodeView:
     """
-    contains method to create a new branch for ticket, update the code and create pr
+    A class representing views for handling code-related operations.
     """
     
     @code_router.post("/code/")
-    async def write_code(ticket: TicketModel):
+    async def write_code(ticket: TicketModel) -> dict:
         """
-        creates question with ticket summary and description, gets the answer from AI,
-        creates a new branch for the ticket, updates the code, commits and pushes the changes,
-        and creates a pull request
+        Endpoint for writing code based on ticket information.
 
-        param ticket: contains issue, user, timestamp fields of the ticket
+        param ticket: The ticket information.
         type ticket: TicketModel
+
+        return: A dictionary containing the response message and data.
+        rtype: dict
         """
         extract = TicketInfoExtractor(ticket)
         Logger.info(message=f"Detected Ticket category : \"{extract.ticket_type}\"")

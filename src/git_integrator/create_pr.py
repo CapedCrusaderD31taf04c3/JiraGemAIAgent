@@ -4,20 +4,20 @@ import os
 
 class PRCreator:
     """
-    contains methods to create PR
+    A class for creating pull requests on GitHub repositories.
     """
 
-    def __init__(self, title, body, head_branch):
+    def __init__(self, title: str, body: str, head_branch: str) -> None:
         """
-        initialises the title, body and branch for the PR
+        Initialize the PRCreator object with necessary information
 
-        param title: title of the PR
+        param title: The title of the pull request
         type title: str
 
-        param body: body for the PR
+        param body: The body content of the pull request.
         type body: str
 
-        param head_branch: name of the head branch
+        param head_branch: The name of the branch to merge from.
         type head_branch: str
         """
 
@@ -26,9 +26,12 @@ class PRCreator:
         self.head_branch = head_branch
   
     @classmethod
-    def prepare_url(cls):
+    def prepare_url(cls) -> str:
         """
-        prepares URL for the PR using environment variables for repo owner and repo name
+        Prepare the URL for creating a pull request.
+
+        return: The URL for creating a pull request.
+        rtype: str
         """
 
         url = (
@@ -41,7 +44,10 @@ class PRCreator:
 
     def prepare_payload(self) -> str:
         """
-        prepares payload for the PR
+        Prepare the payload for creating a pull request
+
+        return: The payload in string format
+        rtype: str
         """
 
         payload = {
@@ -54,9 +60,12 @@ class PRCreator:
         return str(payload)
     
     @classmethod
-    def prepare_headers(cls):
+    def prepare_headers(cls) -> dict:
         """
-        prepares headers for the PR
+        Prepare the headers for making the API request.
+
+        return: The headers dictionary.
+        rtype: dict
         """
 
         headers = {
@@ -68,9 +77,12 @@ class PRCreator:
 
         return headers
 
-    def create_pull_request(self):
+    def create_pull_request(self) -> requests.Response:
         """
-        creates pull request by using the url, headers and payload created initially
+        Create a pull request on the GitHub repository
+
+        return: The response object if the request is successful, else None.
+        rtype: requests.Response
         """
 
         response = requests.request(

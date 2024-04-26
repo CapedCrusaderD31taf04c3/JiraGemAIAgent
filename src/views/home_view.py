@@ -5,12 +5,15 @@ home_router = APIRouter()
 
 class HomeView:
     """
-    contains method for home view
+    A class representing views for the home endpoint.
     """
     @home_router.get("/")
-    async def home():
+    async def home() -> dict:
         """
-        returns response for home view
+        Endpoint for the home view.
+
+        return: A dictionary containing the response message and data.
+        rtype: dict
         """
 
         return {

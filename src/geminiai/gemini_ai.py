@@ -5,18 +5,21 @@ import google.generativeai as genai
 
 class LoadHistory:
     """
-    contains methods to load prompts for the chat 
+    A class to manage chat history and loading source code into it. 
     """
     
     history = [CoderPrompt.PROMPT]
 
     @classmethod
-    def load_src_code_in_history(cls, docs):
+    def load_src_code_in_history(cls, docs:list) -> list:
         """
-        loads the source code in the chat history
+        Load source code into chat history
 
-        param docs: contains the source code
+        param docs: List of documents containing source code.
         type docs: list
+
+        return: Updated chat history including the source code.
+        rtype: list
         """
         cls.history.append(CoderPrompt.SOURCE_CODE_COMING_MSG)
         
@@ -34,17 +37,23 @@ class LoadHistory:
 
 
 class GenerativeAI:
+    """
+    A class for interacting with a generative AI model for chatting
+    """
 
     genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
     model = genai.GenerativeModel('gemini-pro')
 
-    def start_new_chat(self, docs):
+    def start_new_chat(self, docs:list) -> genai.generative_models.ChatSession:
         """
-        loads the prompts and source code in history and starts a new chat
+        Start a new chat session.
 
-        param docs: the source code to be included in history
+        param docs: List of documents containing source code.
         type docs: list
+
+        return: Chat session object
+        rtype: genai.generative_models.ChatSession
         """
         history = LoadHistory.load_src_code_in_history(docs=docs)
         chat = self.model.start_chat(history=history)
@@ -52,15 +61,18 @@ class GenerativeAI:
         return chat
     
 
-    def ask(self, question, docs):
+    def ask(self, question: str, docs: list) -> str:
         """
-        returns the response to the chat
+        Ask a question to the AI model.
 
-        param question: the question to be asked to AI
+        param question: The question to be asked to AI
         type question: str
 
-        param docs: the source code to be included in question
+        param docs: List of documents containing source code
         type docs: list
+
+        return: Response from the AI model
+        rtype: str
         """
         chat = self.start_new_chat(docs=docs)
         response = chat.send_message(content=question)

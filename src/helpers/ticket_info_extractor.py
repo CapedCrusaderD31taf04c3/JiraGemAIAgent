@@ -1,16 +1,17 @@
 
 from logger.custom_logger import Logger
+from models.ticket_model import TicketModel
 
 class TicketInfoExtractor:
     """
-    extracts the information from the ticket
+    A class for extracting information from a ticket object.
     """
 
-    def __init__(self, ticket):
+    def __init__(self, ticket: TicketModel) -> None:
         """
-        extracts key, summary, description and type of ticket
+        Initialize TicketInfoExtractor object and retrieve ticket information.
 
-        param ticket: ticket to extract information from
+        param ticket: The ticket object from which information will be extracted.
         type ticket: TicketModel   
         """
 

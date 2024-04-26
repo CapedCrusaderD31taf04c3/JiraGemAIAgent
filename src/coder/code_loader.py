@@ -5,15 +5,19 @@ from langchain_community.document_loaders import PythonLoader
 
 class SourceCodeLoader:
     """
-    contains method to load source code
+    A class responsible for loading source code files from a directory.
     """
 
     docs = []
 
     @classmethod
-    def loader(cls):
+    def loader(cls) -> list:
         """
-        loads source code from the directory
+        This method initializes a DirectoryLoader object with the specified parameters and 
+        uses it to load source code files from the directory.
+
+        return: A list containing the loaded source code files
+        rtype: list
         """
 
         loader = DirectoryLoader(
