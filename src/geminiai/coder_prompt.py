@@ -15,6 +15,7 @@
 
 class CoderPrompt:
     """
+    Prepares the prompt for updating source code
     """
 
     INPUT_PREPARATION = """You are an Expert Software Engineer I am providing source code of a project in some next messages after the given example of output, please consider them all together as a whole project 

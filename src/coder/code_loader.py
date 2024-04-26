@@ -20,13 +20,19 @@ import os
 
 class SourceCodeLoader:
     """
+    A class responsible for loading source code files from a directory.
     """
 
     docs = []
 
     @classmethod
-    def loader(cls):
+    def loader(cls) -> list:
         """
+        This method initializes a DirectoryLoader object with the specified parameters and 
+        uses it to load source code files from the directory.
+
+        return: A list containing the loaded source code files
+        rtype: list
         """
 
         loader = DirectoryLoader(

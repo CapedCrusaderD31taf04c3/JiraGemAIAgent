@@ -14,13 +14,19 @@
 # limitations under the License.
 
 from logger.custom_logger import Logger
+from models.ticket_model import TicketModel
 
 class TicketInfoExtractor:
     """
+    A class for extracting information from a ticket object.
     """
 
-    def __init__(self, ticket):
+    def __init__(self, ticket: TicketModel) -> None:
         """
+        Initialize TicketInfoExtractor object and retrieve ticket information.
+
+        param ticket: The ticket object from which information will be extracted.
+        type ticket: TicketModel   
         """
 
         Logger.info(message="Retrieving Ticket Information", stage="START")

@@ -18,33 +18,60 @@ from pathlib import Path
 
 class CodeUpdater:
     """
+    This class parses a JSON answer containing solutions and performs actions such as updating,
+    creating, or deleting files based on the provided information.
     """
 
-    def __init__(self, answer) -> None:
+    def __init__(self, answer:dict) -> None:
         """
+        Initialises the solution with the answer received
+
+        param answer: Answer given from AI
+        type answer: dict
         """
 
         self.solutions = json.loads(answer)
 
     # File update
-    def file_updater(self, file_location, file_data):
+    def file_updater(self, file_location: Path, file_data: str) -> None:
         """
+        Update a file with new data.
+
+        param file_location: Location of the file to be updated
+        type file_location: Path
+
+        param file_data: New data to write to the file
+        type file_data: str
         """
+
         if file_location.exists():
             with open(file_location, "w") as fw:
                 fw.write(file_data)
 
-    def file_creater(self, file_location, file_data):
+    def file_creater(self, file_location: Path, file_data: str) -> None:
         """
+        Create a new file with specified data
+
+        param file_location: Location where the new file should be created
+        type file_location: Path
+
+        param file_data: Data to write to the new file
+        type file_data: str
         """
+
         if not file_location.parent.exists():
             file_location.parent.mkdir(parents=True)
         with open(file_location, "w") as fw:
             fw.write(file_data)
 
-    def file_deleter(self, file_location):
+    def file_deleter(self, file_location: Path) -> None:
         """
+        Delete a file and its parent directory if it becomes empty.
+
+        param file_location: location of file to be deleted
+        type file_location: Path
         """
+
         if file_location.exists():
             # If the file exists, delete it
             file_location.unlink()
@@ -54,8 +81,9 @@ class CodeUpdater:
         if not any(are_files_exists):
             file_location.parent.rmdir()
 	
-    def update(self):
+    def update(self) -> None:
         """
+        Execute the update process based on provided solutions. 
         """
 
         for solution in self.solutions:

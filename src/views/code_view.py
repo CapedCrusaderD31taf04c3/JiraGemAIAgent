@@ -31,10 +31,19 @@ code_router = APIRouter()
 
 class CodeView:
     """
+    A class representing views for handling code-related operations.
     """
+    
     @code_router.post("/code/")
-    async def write_code(self, ticket: TicketModel):
+    async def write_code(ticket: TicketModel) -> dict:
         """
+        Endpoint for writing code based on ticket information.
+
+        param ticket: The ticket information.
+        type ticket: TicketModel
+
+        return: A dictionary containing the response message and data.
+        rtype: dict
         """
 
         try:
