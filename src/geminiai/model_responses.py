@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import BaseModel
+class ModelResponse:
+    """
+    """
 
-class TicketModel(BaseModel):
-    """
-    Specifies the pydantic model for the ticket
-    """
-    
-    issue: dict
-    user: dict
-    timestamp: int
+    INTRO_MSG_RECEIVED = "Got it! Just provide the task details, and I'll assist you in updating the source code accordingly."
+
+    SRC_CODE_COMING = "Sure."
+
+    TXT_OF_SRC_FILE_RECEIVED = "OK, I understand the code"
+
+    ALL_SRC_CODE_RECEIVED = "Great! Please go ahead and provide the details of the task you'd like to perform on the provided source code."
