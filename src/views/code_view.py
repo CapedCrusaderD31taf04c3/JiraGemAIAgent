@@ -74,7 +74,7 @@ class CodeView:
             CodeUpdater(answer.text).update()
 
             git_bot.stage_changes().commit_changes(
-                commit_message="commited by JiraGemAIAgent"
+                commit_message=f"{extract.ticket_key}-commited by JiraGemAIAgent"
             ).push_changes()
 
             git_bot.create_pr(description=extract.ticket_desc)
@@ -82,6 +82,13 @@ class CodeView:
             response =  {
                 "message": "Success",
                 "status": 200
+            }
+        except JSONDecodeError as json_err:
+            GitActivity().safe_eject()
+            response =  {
+                "message": "Wrong AI Reply, Response From AI is not able to Convert to valid json",
+                "status": 500,
+                "data": str(json_err)
             }
         except Exception as err:
             GitActivity().safe_eject()

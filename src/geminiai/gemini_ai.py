@@ -56,7 +56,7 @@ class LoadHistory:
         introduction_text = f"""
         {CoderPrompt.INTRODUCTION_PROMPT}
         {CoderPrompt.OUPUT_EXAMPLES_COMING_MSG}
-        {CoderPrompt.prepare_output_examples()}
+        {CoderPrompt.OUTPUT_EXAMPLES}
         {CoderPrompt.OUPUT_EXAMPLES_ARRIVED_MSG}
         """
 
@@ -79,6 +79,8 @@ class LoadHistory:
 
         cls.history.append(cls.get_content(role="user", text=CoderPrompt.SOURCE_CODE_COMING_MSG))
         cls.history.append(cls.get_content(role="model", text=ModelResponse.SRC_CODE_COMING))
+        
+        src_code_parts = []
         for doc in docs:
             path = doc.metadata['source'].replace('\\\\', '/')
             source_code = (
@@ -86,8 +88,10 @@ class LoadHistory:
                 f"{doc.page_content}"
             )
 
-            cls.history.append(cls.get_content(role="user", text=source_code))
-            cls.history.append(cls.get_content(role="model", text=ModelResponse.TXT_OF_SRC_FILE_RECEIVED))
+            src_code_parts.append(PartDict(text=source_code))
+
+        cls.history.append(ContentDict(role="user", parts=src_code_parts))
+        cls.history.append(cls.get_content(role="model", text=ModelResponse.TXT_OF_SRC_FILE_RECEIVED))
 
         cls.history.append(cls.get_content(role="user", text=CoderPrompt.SOURCE_CODE_ARRIVED_MSG))
         cls.history.append(cls.get_content(role="model", text=ModelResponse.ALL_SRC_CODE_RECEIVED))

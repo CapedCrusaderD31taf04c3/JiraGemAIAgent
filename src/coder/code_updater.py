@@ -22,7 +22,7 @@ class CodeUpdater:
     creating, or deleting files based on the provided information.
     """
 
-    def __init__(self, answer:dict):
+    def __init__(self, answer:str):
         """
         Initialises the solution with the answer received
 
@@ -30,9 +30,13 @@ class CodeUpdater:
         type answer: dict
         """
         answer = answer.replace('\\\\', '/')
-        if "```json" in answer:
-            answer = answer.replace("```json", "```")
-            answer = answer.replace("```", '"""')
+        answer = answer.replace('/n', '\\\\n')
+        answer = answer.replace('/t', '\\\\t')
+        if answer.startswith("```json"):
+            answer = answer[7:-4]
+        if answer.startswith("```"):
+            answer = answer[4:-4]
+            
         self.solutions = json.loads(answer)
 
     # File update
