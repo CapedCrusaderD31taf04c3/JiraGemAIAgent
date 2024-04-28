@@ -79,8 +79,8 @@ class GitActivity(Repository):
             ticket_id=ticket_id, 
             ticket_title=ticket_title
         )
-
-        self.git.branch(self.branch_name)
+        if self.branch_name not in self.repo.branches:
+            self.git.branch(self.branch_name)
         return self
 
     def checkout_to_branch(self, branch_name: str) -> GitActivity:
@@ -155,7 +155,6 @@ class GitActivity(Repository):
             head_branch=self.branch_name
         )
 
-
     def safe_eject(self):
         """
         Safely restructuring git local repositry environment
@@ -163,4 +162,6 @@ class GitActivity(Repository):
         Logger.info(message="Safely Ejecting ...", stage="START")
         self.git.checkout(".")
         self.git.checkout(self.default_branch)
+        if self.branch_name in self.git.branch():
+            self.git.branch("d", self.branch_name)
         Logger.info(message="Safely Ejected", stage="END")

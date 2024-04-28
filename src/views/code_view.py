@@ -35,7 +35,7 @@ class CodeView:
     """
     
     @code_router.post("/code/")
-    async def write_code(ticket: TicketModel) -> dict:
+    async def write_code(ticket: TicketModel) -> dict: # NOTE: SCA warning suppressed Python:S5720
         """
         Endpoint for writing code based on ticket information.
 
@@ -61,31 +61,37 @@ class CodeView:
             )
             
             # For Github Activities
-            # git_bot = GitActivity()
-            # git_bot.create_new_branch(
-            #     ticket_id=extract.ticket_key, 
-            #     ticket_title=extract.ticket_summary
-            # ).checkout_to_branch(git_bot.branch_name)
+            git_bot = GitActivity()
+            git_bot.create_new_branch(
+                ticket_id=extract.ticket_key, 
+                ticket_title=extract.ticket_summary
+            ).checkout_to_branch(git_bot.branch_name)
 
             src = SourceCodeLoader.loader()
 
             answer = GenerativeAI().ask(question=question, docs=src)  
 
-            CodeUpdater(answer.content).update()
+            CodeUpdater(answer.text).update()
 
-            # git_bot.stage_changes().commit_changes(
-            #     commit_message="This is a Commit Message"
-            # ).push_changes()
+            git_bot.stage_changes().commit_changes(
+                commit_message=f"{extract.ticket_key}-commited by JiraGemAIAgent"
+            ).push_changes()
 
-            # git_bot.create_pr(description=extract.ticket_desc)
+            git_bot.create_pr(description=extract.ticket_desc)
 
             response =  {
                 "message": "Success",
-                "status": 200,
-                "data": answer
+                "status": 200
+            }
+        except JSONDecodeError as json_err:
+            GitActivity().safe_eject()
+            response =  {
+                "message": "Wrong AI Reply, Response From AI is not able to Convert to valid json",
+                "status": 500,
+                "data": str(json_err)
             }
         except Exception as err:
-            GitActivity.safe_eject()
+            GitActivity().safe_eject()
             response =  {
                 "message": "Error",
                 "status": 500,

@@ -17,10 +17,10 @@ class ModelResponse:
     """
     """
 
-    INTRO_MSG_RECEIVED = "Got it! Just provide the task details, and I'll assist you in updating the source code accordingly."
+    INTRO_MSG_RECEIVED = "Got it!"
 
-    SRC_CODE_COMING = "Sure."
+    SRC_CODE_COMING = "Yes. Please provide code"
 
     TXT_OF_SRC_FILE_RECEIVED = "OK, I understand the code"
 
-    ALL_SRC_CODE_RECEIVED = "Great! Please go ahead and provide the details of the task you'd like to perform on the provided source code."
+    ALL_SRC_CODE_RECEIVED = "Great! Please provide task"

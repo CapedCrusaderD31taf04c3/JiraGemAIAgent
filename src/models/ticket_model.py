@@ -15,11 +15,33 @@
 
 from pydantic import BaseModel
 
+class IssueTypeModel(BaseModel):
+    """
+    Specifies pydantic model for issuetype sub object
+    """
+    namedValue: str
+
+class FieldModel(BaseModel):
+    """
+    Specifies pydantic model for field sub object
+    """
+    summary: str
+    description: str
+    issuetype: IssueTypeModel
+
+
+class IssueModel(BaseModel):
+    """
+    Specifies pydantic model for issue sub object
+    """
+    key: str
+    fields: FieldModel
+
 class TicketModel(BaseModel):
     """
-    Specifies the pydantic model for the ticket
+    Specifies the pydantic model for the ticket webhook
     """
     
-    issue: dict
+    issue: IssueModel
     user: dict
     timestamp: int
