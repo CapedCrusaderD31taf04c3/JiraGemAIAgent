@@ -14,18 +14,11 @@
 # limitations under the License.
 
 from fastapi import APIRouter
-from json import JSONDecodeError
-from git.exc import GitCommandError
-
 from models.ticket_model import TicketModel
 from helpers.ticket_info_extractor import TicketInfoExtractor
 from logger.custom_logger import Logger
-from coder.code_loader import SourceCodeLoader
-from coder.code_updater import CodeUpdater
-from git_integrator.git_activities import GitActivity
-from geminiai.gemini_ai import GenerativeAI
-
-
+from coder.scheduler import Scheduler
+from coder.develop import Develop
 
 code_router = APIRouter()
 
@@ -59,40 +52,15 @@ class CodeView:
                 "}"
                 "A:"
             )
+
+            Scheduler.runner.add_task(Develop().perform, extract=extract, question=question)
             
-            # For Github Activities
-            git_bot = GitActivity()
-            git_bot.create_new_branch(
-                ticket_id=extract.ticket_key, 
-                ticket_title=extract.ticket_summary
-            ).checkout_to_branch(git_bot.branch_name)
-
-            src = SourceCodeLoader.loader()
-
-            answer = GenerativeAI().ask(question=question, docs=src)  
-
-            CodeUpdater(answer.text).update()
-
-            git_bot.stage_changes().commit_changes(
-                commit_message=f"{extract.ticket_key}-commited by JiraGemAIAgent"
-            ).push_changes()
-
-            git_bot.create_pr(description=extract.ticket_desc)
-
-            response =  {
+            response = {
                 "message": "Success",
                 "status": 200
             }
-        except JSONDecodeError as json_err:
-            GitActivity().safe_eject()
-            response =  {
-                "message": "Wrong AI Reply, Response From AI is not able to Convert to valid json",
-                "status": 500,
-                "data": str(json_err)
-            }
         except Exception as err:
-            GitActivity().safe_eject()
-            response =  {
+            response = {
                 "message": "Error",
                 "status": 500,
                 "data": str(err)

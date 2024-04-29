@@ -32,8 +32,19 @@ class TicketInfoExtractor:
         Logger.info(message="Retrieving Ticket Information", stage="START")
 
         self.ticket_key = ticket.issue.key
-        self.ticket_summary = ticket.issue.fields.summary
-        self.ticket_desc = ticket.issue.fields.description
+        self.ticket_summary = self.refine(ticket.issue.fields.summary)
+        self.ticket_desc = self.refine(ticket.issue.fields.description)
         self.ticket_type = ticket.issue.fields.issuetype.namedValue
         
         Logger.info(message="Retrieved Ticket Information", stage="END")
+
+    @classmethod
+    def refine(cls, text):
+        """
+        Refining the text, removing single and double quotes
+
+        param text: input text
+        type text: str
+        """
+        
+        return text.replace('"',"").replace("'", "")

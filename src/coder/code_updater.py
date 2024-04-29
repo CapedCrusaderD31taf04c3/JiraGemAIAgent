@@ -27,7 +27,7 @@ class CodeUpdater:
         Initialises the solution with the answer received
 
         param answer: Answer given from AI
-        type answer: dict
+        type answer: str
         """
         answer = answer.replace('\\\\', '/')
         answer = answer.replace('/n', '\\\\n')
