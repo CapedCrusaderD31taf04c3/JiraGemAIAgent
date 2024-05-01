@@ -153,7 +153,7 @@ class GitActivity(Repository):
             title=self.branch_name, 
             body=description,
             head_branch=self.branch_name
-        )
+        ).create_pull_request()
 
     def safe_eject(self):
         """

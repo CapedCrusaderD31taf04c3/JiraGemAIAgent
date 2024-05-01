@@ -57,7 +57,7 @@ class SubprocessWorkScheduler:
                 func, args, kwargs = task
                 try:
                     func(*args, **kwargs)
-                    time.sleep(20)
+                    time.sleep(5)
                 except Exception as err:
                     Logger.error(message=f"Error Occurred - {str(err)}")
             self.work_queue.task_done()

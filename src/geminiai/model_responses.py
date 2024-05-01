@@ -19,8 +19,6 @@ class ModelResponse:
 
     INTRO_MSG_RECEIVED = "Got it!"
 
-    SRC_CODE_COMING = "Yes. Please provide code"
-
-    TXT_OF_SRC_FILE_RECEIVED = "OK, I understand the code"
+    TXT_OF_SRC_FILE_RECEIVED = "OK, I understand the code, now please provide task"
 
     ALL_SRC_CODE_RECEIVED = "Great! Please provide task"

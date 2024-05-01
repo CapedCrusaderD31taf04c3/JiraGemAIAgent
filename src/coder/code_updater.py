@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 from pathlib import Path
+from typing import List
 
 class CodeUpdater:
     """
@@ -22,24 +22,16 @@ class CodeUpdater:
     creating, or deleting files based on the provided information.
     """
 
-    def __init__(self, answer:str):
+    def __init__(self, src_code: List[dict]):
         """
         Initialises the solution with the answer received
 
-        param answer: Answer given from AI
-        type answer: str
+        param src_code: Source Code given from AI
+        type src_code: List[dict]
         """
-        answer = answer.replace('\\\\', '/')
-        answer = answer.replace('/n', '\\\\n')
-        answer = answer.replace('/t', '\\\\t')
-        if answer.startswith("```json"):
-            answer = answer[7:-4]
-        if answer.startswith("```"):
-            answer = answer[4:-4]
-            
-        self.solutions = json.loads(answer)
+        
+        self.src_code = src_code
 
-    # File update
     def file_updater(self, file_location: Path, file_data: str) -> None:
         """
         Update a file with new data.
@@ -92,20 +84,20 @@ class CodeUpdater:
         Execute the update process based on provided solutions.
         """
 
-        for solution in self.solutions:
-            if solution.get("to_update", False):
+        for code in self.src_code:
+            if code.get("to_update", False):
                 self.file_updater(
-                    file_location=Path(solution["file_location"]),
-                    file_data=solution["source_code"]
+                    file_location=Path(code["file_location"]),
+                    file_data=code["source_code"]
                 )
 
-            elif solution.get("to_create", False):
+            elif code.get("to_create", False):
                 self.file_creater(
-                    file_location=Path(solution["file_location"]),
-                    file_data=solution["source_code"]
+                    file_location=Path(code["file_location"]),
+                    file_data=code["source_code"]
                 )
 
-            elif solution.get("to_delete", False):
+            elif code.get("to_delete", False):
                 self.file_deleter(
-                    file_location=Path(solution["file_location"])
+                    file_location=Path(code["file_location"])
                 )

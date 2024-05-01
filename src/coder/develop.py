@@ -55,21 +55,28 @@ class Develop:
             Logger.info(message="Source Code Loaded", stage="END")
 
             Logger.info(message="Asking to AI", stage="START")
-            answer = GenerativeAI().ask(question=question, docs=src)  
+            gen_ai = GenerativeAI()
+            answer = gen_ai.ask(question=question, docs=src)  
+            solutions = gen_ai.parse_text_to_json(answer.text)
             Logger.info(message="AI Replied", stage="END")
 
             Logger.info(message="Updating the source code from local repo", stage="START")
-            CodeUpdater(answer.text).update()
+            CodeUpdater(solutions.get("src_code", [])).update()
             Logger.info(message="Source Code Updated", stage="END")
 
             Logger.info(message="Staging commiting and pushing the changes", stage="START")
+            commit_message = solutions.get("commit_msg", "Committed By AI")
             self.git_bot.stage_changes().commit_changes(
-                commit_message=f"{extract.ticket_key}-commited by JiraGemAIAgent"
+                commit_message=f"{commit_message}-{extract.ticket_key}"
             ).push_changes()
             Logger.info(message="Staged, commited and pushed", stage="END")
 
             Logger.info(message="Creating Pull request", stage="START")
-            self.git_bot.create_pr(description=extract.ticket_desc)
+            self.git_bot.create_pr(
+                description=solutions.get("pr_desc", extract.ticket_desc)
+                )
+            
+            
             Logger.info(message=f"{extract.ticket_key} Pull request Created", stage="END")
 
         except GitCommandError as git_err:

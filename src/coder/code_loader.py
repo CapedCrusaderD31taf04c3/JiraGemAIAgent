@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from langchain_community.document_loaders import DirectoryLoader
-from langchain_community.document_loaders import PythonLoader
-
+from langchain_community.document_loaders import DirectoryLoader, PythonLoader
 import os
 
 class SourceCodeLoader:

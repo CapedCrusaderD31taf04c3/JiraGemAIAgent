@@ -106,4 +106,7 @@ class PRCreator:
             data=self.prepare_payload()
         )
 
+        if response.status_code == 400:
+            raise requests.exceptions.JSONDecodeError(str(response.content))
+
         return response

@@ -20,6 +20,7 @@ from google.generativeai.generative_models import ChatSession
 from google.generativeai.types.generation_types import GenerateContentResponse
 import google.generativeai as genai
 import os
+import json
 
 
 class LoadHistory:
@@ -53,14 +54,14 @@ class LoadHistory:
         Loading introduction message into history
         """
         
-        introduction_text = f"""
-        {CoderPrompt.INTRODUCTION_PROMPT}
-        {CoderPrompt.OUPUT_EXAMPLES_COMING_MSG}
-        {CoderPrompt.OUTPUT_EXAMPLES}
-        {CoderPrompt.OUPUT_EXAMPLES_ARRIVED_MSG}
-        """
+        introduction_text = [
+            PartDict(text=CoderPrompt.INTRODUCTION_PROMPT),
+            PartDict(text=CoderPrompt.OUPUT_EXAMPLES_COMING_MSG),
+            PartDict(text=CoderPrompt.OUTPUT_EXAMPLES),
+            PartDict(text=CoderPrompt.OUPUT_EXAMPLES_ARRIVED_MSG),
+        ]        
 
-        cls.history.append(cls.get_content(role="user", text=introduction_text))
+        cls.history.append(ContentDict(role="user", parts=introduction_text))
         cls.history.append(cls.get_content(role="model", text=ModelResponse.INTRO_MSG_RECEIVED))
 
     @classmethod
@@ -77,10 +78,7 @@ class LoadHistory:
 
         cls.load_intro_msg_in_history()
 
-        cls.history.append(cls.get_content(role="user", text=CoderPrompt.SOURCE_CODE_COMING_MSG))
-        cls.history.append(cls.get_content(role="model", text=ModelResponse.SRC_CODE_COMING))
-        
-        src_code_parts = []
+        src_code_parts = [PartDict(text=CoderPrompt.SOURCE_CODE_COMING_MSG)]
         for doc in docs:
             path = doc.metadata['source'].replace('\\\\', '/')
             source_code = (
@@ -88,14 +86,12 @@ class LoadHistory:
                 f"{doc.page_content}"
             )
 
-            src_code_parts.append(PartDict(text=source_code))
-
+            src_code_parts.append(PartDict(text=CoderPrompt.SOURCE_CODE_ARRIVED_MSG))
+        src_code_parts.append(PartDict(text=source_code))
+        
         cls.history.append(ContentDict(role="user", parts=src_code_parts))
         cls.history.append(cls.get_content(role="model", text=ModelResponse.TXT_OF_SRC_FILE_RECEIVED))
 
-        cls.history.append(cls.get_content(role="user", text=CoderPrompt.SOURCE_CODE_ARRIVED_MSG))
-        cls.history.append(cls.get_content(role="model", text=ModelResponse.ALL_SRC_CODE_RECEIVED))
-        
         return cls.history
 
 
@@ -148,3 +144,18 @@ class GenerativeAI:
         response = chat.send_message(content=question)
 
         return response
+    
+    def parse_text_to_json(self, answer):
+        """
+        """
+        answer = answer.replace('\\\\', '/')
+        answer = answer.replace('/n', '\\\\n')
+        answer = answer.replace('/t', '\\\\t')
+        if answer.startswith("```json"):
+            answer = answer[7:-4]
+        if answer.startswith("```"):
+            answer = answer[4:-4]
+            
+        solutions = json.loads(answer)
+
+        return solutions
